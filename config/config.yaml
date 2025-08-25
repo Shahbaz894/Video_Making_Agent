@@ -1,0 +1,46 @@
+llm:
+  openai:
+    provider: "openai"
+    model: "gpt-4"            # For high-quality script writing
+    task: "text-generation"
+
+  groq:
+    provider: "groq"
+    model: "mixtral-8x7b"     # Example Groq model (fast + efficient)
+    task: "text-generation"
+
+  huggingface:
+    provider: "huggingface"
+    models:
+      - name: "mistralai/Mistral-7B-Instruct-v0.2"
+        task: "text-generation"   # Lightweight alternative for scripting
+      - name: "stabilityai/stable-diffusion-xl-base-1.0"
+        task: "image-generation"  # Generate scene images/frames
+
+multimodal:
+  tts:
+    provider: "openai"
+    model: "gpt-4o-mini-tts"
+    format: "mp3"
+
+  video:
+    provider: "pika-labs"         # Placeholder: you can switch to Runway, Kaiber, etc.
+    model: "pika-v1"
+    task: "video-generation"
+
+workflow:
+  - step: "script_generation"
+    options:
+      - model: "openai:gpt-4"          # Best quality script
+      - model: "groq:mixtral-8x7b"     # Faster/cheaper alternative
+      - model: "huggingface:mistralai/Mistral-7B-Instruct-v0.2"
+
+  - step: "scene_images"
+    model: "huggingface:stabilityai/stable-diffusion-xl-base-1.0"
+
+  - step: "voice_over"
+    model: "openai:gpt-4o-mini-tts"
+
+  - step: "video_composition"
+    model: "pika-labs:pika-v1"
+
